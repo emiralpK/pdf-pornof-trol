@@ -1,267 +1,294 @@
+<!-- =============================
+  Portfolio Site with Advanced Admin Panel
+  Single‑page solution (static) for GitHub Pages
+  ─ View the site at   https://your‑username.github.io/your‑repo/
+  ─ Open the admin panel at https://your‑username.github.io/your‑repo/admin.html
+     default login password → admin123  (change in admin.html)
+  All data is stored in the browser’s localStorage → persists between visits
+  ============================= -->
+
+<!-- =============================  index.html  ============================= -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burak Sürmeli - Portfolyo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #000000; /* Simsiyah ana arka plan */
-            color: #f0f0f0; /* Genel metin rengi */
-        }
-        .nav-link {
-            @apply py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors duration-300;
-        }
-        .section-title {
-            @apply text-4xl font-bold mb-12 text-center text-white;
-        }
-        .card {
-            @apply bg-gray-900 rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300; /* Kart arka planı koyulaştırıldı */
-        }
-        .card-image {
-            @apply w-full h-72 object-cover;
-        }
-        .card-title {
-            @apply text-xl font-semibold mt-6 mb-2 text-center text-white;
-        }
-        .card-button {
-            @apply block w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 text-center transition-colors duration-300; /* Buton rengi biraz koyulaştırıldı */
-        }
-        .hero-bg {
-            /* Ana sayfa görseli olarak Dyson kulaklık görseli kullanıldı */
-            background-image: url('Ekran görüntüsü 2025-05-10 172501.png'); /* YEREL DOSYA YOLU - Gerekirse güncelleyin */
-            background-size: cover;
-            background-position: center;
-            background-blend-mode: overlay;
-        }
-        .hero-overlay {
-             @apply bg-black/60; /* Ana sayfa görselinin üzerindeki karartma efekti */
-        }
-        .btn-primary {
-            @apply bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg;
-        }
-        .form-input {
-            /* İletişim formu giriş alanları koyulaştırıldı */
-            @apply w-full p-4 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-shadow duration-300;
-        }
-        .form-label {
-            @apply block mb-2 text-sm font-medium text-gray-300;
-        }
-        /* Scrollbar Stilleri */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a; /* Scrollbar yolu biraz daha açık */
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4a4a4a; /* Scrollbar tutamacı */
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #5a5a5a;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Burak Sürmeli – Portfolyo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; background:#000; color:#f0f0f0; }
+    .nav-link { @apply py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors; }
+    .section-title { @apply text-4xl font-bold mb-12 text-center text-white; }
+    .card { @apply bg-gray-900 rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform; }
+    .card-image { @apply w-full h-72 object-cover; }
+    .card-title { @apply text-xl font-semibold mt-6 mb-2 text-center text-white; }
+    .card-button { @apply block w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 text-center transition-colors; }
+    .hero-overlay { @apply bg-black/60; }
+    .btn-primary { @apply bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all transform hover:scale-105 shadow-lg; }
+    .form-input { @apply w-full p-4 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500; }
+    .form-label { @apply block mb-2 text-sm font-medium text-gray-300; }
+    /* custom scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#1a1a1a; }
+    ::-webkit-scrollbar-thumb { background:#4a4a4a;border-radius:4px; }
+    ::-webkit-scrollbar-thumb:hover { background:#5a5a5a; }
+  </style>
 </head>
 <body class="antialiased">
+  <!-- Header -->
+  <header class="bg-black/80 backdrop-blur-md fixed top-0 inset-x-0 z-50 shadow-lg">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#home" class="text-2xl font-bold text-white" id="logoText">LOGO</a>
+      <nav class="space-x-4">
+        <a href="#home"     class="nav-link">HOME</a>
+        <a href="#portfolio" class="nav-link">PORTFOLIO</a>
+        <a href="#about"     class="nav-link">ABOUT</a>
+        <a href="#contact"   class="nav-link">CONTACT</a>
+      </nav>
+    </div>
+  </header>
 
-    <header class="bg-black/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 shadow-lg"> {/* Arka plan siyaha çevrildi */}
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold text-white">LOGO</a>
-            <nav class="space-x-4">
-                <a href="#home" class="nav-link">HOME</a>
-                <a href="#portfolio" class="nav-link">PORTFOLIO</a>
-                <a href="#about" class="nav-link">ABOUT</a>
-                <a href="#contact" class="nav-link">CONTACT</a>
-            </nav>
-        </div>
+  <!-- HERO -->
+  <section id="home" class="min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image:url('Ekran görüntüsü 2025-05-10 172501.png')" aria-label="Hero" >
+    <div class="text-center p-8 hero-overlay rounded-xl shadow-2xl max-w-3xl mx-auto">
+      <h1 class="text-5xl md:text-7xl font-black text-white mb-2 leading-tight">
+        Selam. Ben <span class="text-sky-400" id="heroName">Burak</span>
+      </h1>
+      <p class="text-2xl md:text-3xl font-semibold text-gray-200 mb-8" id="heroTag">Creative Design</p>
+      <a href="#portfolio" class="btn-primary">FARKINI GÖSTER</a>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio" class="py-20 bg-black">
+    <div class="container mx-auto px-6">
+      <h2 class="section-title">PORTFOLIO</h2>
+      <div id="portfolioGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="py-20 bg-black">
+    <div class="container mx-auto px-6">
+      <h2 class="section-title">ABOUT</h2>
+      <div class="max-w-3xl mx-auto bg-gray-900 p-10 rounded-xl shadow-2xl">
+        <p id="aboutText" class="text-lg text-gray-300 leading-relaxed"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="py-20 bg-black">
+    <div class="container mx-auto px-6">
+      <h2 class="section-title">CONTACT</h2>
+      <div class="max-w-2xl mx-auto bg-gray-900 p-10 rounded-xl shadow-2xl">
+        <form id="contactForm">
+          <div class="mb-6"><label class="form-label" for="name">Name</label><input class="form-input" id="name" required /></div>
+          <div class="mb-6"><label class="form-label" for="email">Email</label><input type="email" class="form-input" id="email" required /></div>
+          <div class="mb-8"><label class="form-label" for="message">Message</label><textarea id="message" rows="5" class="form-input" required></textarea></div>
+          <button type="submit" class="w-full btn-primary">Send</button>
+        </form>
+        <div id="formMessage" class="mt-4 text-center"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-black text-center py-8">
+    <p class="text-gray-400">&copy; <span id="currentYear"></span> <span id="footerName">Burak Sürmeli</span>. All rights reserved.</p>
+  </footer>
+
+  <!-- ================= DATA & RENDER ENGINE ================= -->
+  <script>
+    const LS_KEY = 'portfolioData_v2';
+    const defaultData = {
+      logo: 'LOGO',
+      heroName: 'Burak',
+      heroTag: 'Creative Design',
+      heroBg: 'Ekran görüntüsü 2025-05-10 172501.png',
+      about: `Ben Burak, grafik tasarım bölümü 4. sınıf öğrencisiyim. Tasarım benim için sadece görsel bir anlatım değil, aynı zamanda bir ifade biçimi. Logo tasarımı, illüstrasyon, sosyal medya içerikleri ve tipografi alanlarında yoğunlaşarak, özgün ve dikkat çekici işler üretmeye odaklanıyorum.\n\nPhotoshop, Illustrator, Figma ve After Effects gibi tasarım araçlarını aktif şekilde kullanıyorum. Hem ajans ortamında profesyonel deneyim kazanmayı hem de freelance projelerle kendi yaratıcı çizgimi ortaya koymayı hedefliyorum.\n\nYaratıcılığım, risk almaktan çekinmeyen yapım ve cesaretim, projelerimde fark yaratmamı sağlıyor. Kendimi sürekli geliştirerek, hem sektöre katkı sunmak hem de kendi tasarım dilimi daha da ileriye taşımak istiyorum.`,
+      portfolio: [
+        { title: 'FARKINI GÖSTER / Dyson Zone', img: 'Ekran görüntüsü 2025-05-10 172501.png', link: '#' },
+        { title: 'Galata Kahvecisi', img: 'resim.png', link: '#' },
+        { title: 'Kartaljet Ürünleri', img: 'Ekran görüntüsü 2025-05-10 172427.png', link: '#' },
+        { title: 'ZOBIE (Örnek)', img: 'Ekran görüntüsü 2025-05-10 172408.png', link: '#' },
+        { title: 'IP Onlara... (Örnek)', img: 'Ekran görüntüsü 2025-05-10 172515.png', link: '#' }
+      ]
+    };
+
+    function loadData(){
+      try{ return JSON.parse(localStorage.getItem(LS_KEY)) || defaultData; }catch(e){ return defaultData; }
+    }
+    function renderSite(data){
+      document.getElementById('logoText').textContent = data.logo;
+      document.getElementById('heroName').textContent = data.heroName;
+      document.getElementById('heroTag').textContent = data.heroTag;
+      document.getElementById('aboutText').innerText = data.about;
+      document.getElementById('footerName').textContent = data.heroName + ' Sürmeli';
+      document.querySelector('#home').style.backgroundImage = `url('${data.heroBg}')`;
+      const grid = document.getElementById('portfolioGrid');
+      grid.innerHTML = '';
+      data.portfolio.forEach((item,i)=>{
+        const card = document.createElement('div'); card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.title}" class="card-image" onerror="this.src='https://placehold.co/600x400/000000/FFFFFF?text=${encodeURIComponent(item.title)}'">
+          <div class="p-6">
+            <h3 class="card-title">${item.title}</h3>
+            ${item.link?`<a href="${item.link}" class="card-button mt-4" target="_blank" rel="noopener">TIKLA</a>`:''}
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+    renderSite(loadData());
+
+    // smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});}));
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // contact form demo
+    const contactForm = document.getElementById('contactForm');
+    if(contactForm){
+      contactForm.addEventListener('submit',e=>{e.preventDefault(); document.getElementById('formMessage').textContent='Mesajınız gönderildi! (demo)'; contactForm.reset(); setTimeout(()=>{document.getElementById('formMessage').textContent='';},4000);});
+    }
+  </script>
+</body>
+</html>
+
+<!-- =============================  admin.html  ============================= -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel – Portfolyo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <style>body{font-family:'Inter',sans-serif;background:#0a0a0a;color:#eee}</style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div id="loginCard" class="bg-gray-900 rounded-xl shadow-2xl p-8 w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">Admin Giriş</h2>
+    <input id="pwd" type="password" placeholder="Şifre" class="form-input mb-4" />
+    <button id="loginBtn" class="btn-primary w-full">Giriş Yap</button>
+  </div>
+
+  <div id="adminPanel" class="hidden w-full max-w-5xl mx-auto">
+    <header class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold">Admin Panel</h1>
+      <div>
+        <button id="previewBtn" class="btn-primary mr-2">Preview</button>
+        <button id="saveBtn" class="btn-primary">Kaydet</button>
+      </div>
     </header>
 
-    <section id="home" class="min-h-screen flex items-center justify-center hero-bg">
-        <div class="text-center p-8 hero-overlay rounded-xl shadow-2xl max-w-3xl mx-auto"> {/* Overlay class'ı eklendi */}
-            <h1 class="text-5xl md:text-7xl font-black text-white mb-2 leading-tight">
-                Selam. Ben <span class="text-sky-400">Burak</span>
-            </h1>
-            <p class="text-2xl md:text-3xl font-semibold text-gray-200 mb-8">
-                Creative Design
-            </p>
-            <a href="#portfolio" class="btn-primary">
-                FARKINI GÖSTER
-            </a>
-        </div>
+    <!-- GENERAL SETTINGS -->
+    <section class="mb-8 bg-gray-900 p-6 rounded-xl shadow-2xl">
+      <h2 class="text-xl font-semibold mb-4">Genel Ayarlar</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div><label class="form-label">Site Logosu Yazısı</label><input id="logoInput" class="form-input" /></div>
+        <div><label class="form-label">Hero Arkaplan URL</label><input id="heroBgInput" class="form-input" /></div>
+        <div><label class="form-label">Hero İsim</label><input id="heroNameInput" class="form-input" /></div>
+        <div><label class="form-label">Hero Alt Yazı</label><input id="heroTagInput" class="form-input" /></div>
+      </div>
     </section>
 
-    <section id="portfolio" class="py-20 bg-black"> {/* Arka plan siyaha çevrildi */}
-        <div class="container mx-auto px-6">
-            <h2 class="section-title">PORTFOLIO</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-                <div class="card">
-                    <img src="Ekran görüntüsü 2025-05-10 172501.png" alt="Farkını Göster Projesi" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/000000/FFFFFF?text=Farkını+Göster+(Ekran+görüntüsü+2025-05-10+172501.png)';">
-                    <div class="p-6">
-                        <h3 class="card-title">FARKINI GÖSTER / Dyson Zone</h3>
-                    </div>
-                </div>
-                <div class="card">
-                     <img src="resim.png" alt="Galata Kahvecisi" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/000000/FFFFFF?text=Galata+Kahvecisi+(resim.png)';">
-                    <div class="p-6">
-                        <h3 class="card-title">Galata Kahvecisi</h3>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="Ekran görüntüsü 2025-05-10 172427.png" alt="Kartaljet Projeleri" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/000000/FFFFFF?text=Kartaljet+(Ekran+görüntüsü+2025-05-10+172427.png)';">
-                    <div class="p-6">
-                        <h3 class="card-title">Kartaljet Ürünleri</h3>
-                    </div>
-                </div>
-                <div class="card">
-                     <img src="Ekran görüntüsü 2025-05-10 172408.png" alt="Zobie Projesi (Örnek)" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/000000/FFFFFF?text=ZOBIE+(Ekran+görüntüsü+2025-05-10+172408.png)';">
-                    <div class="p-6">
-                        <h3 class="card-title">ZOBIE (Örnek)</h3>
-                        <a href="#" class="card-button mt-4">TIKLA</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="Ekran görüntüsü 2025-05-10 172515.png" alt="IP Onlara Projesi (Örnek)" class="card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/000000/FFFFFF?text=IP+Onlara+(Ekran+görüntüsü+2025-05-10+172515.png)';">
-                    <div class="p-6">
-                        <h3 class="card-title">IP ONLARA... (Örnek)</h3>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://placehold.co/600x400/000000/FFFFFF?text=Di%C4%9Fer+Proje+1" alt="Diğer Proje 1" class="card-image">
-                    <div class="p-6">
-                        <h3 class="card-title">Diğer Proje 1</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- ABOUT -->
+    <section class="mb-8 bg-gray-900 p-6 rounded-xl shadow-2xl">
+      <h2 class="text-xl font-semibold mb-4">Hakkımda Metni</h2>
+      <textarea id="aboutInput" rows="6" class="form-input"></textarea>
     </section>
 
-    <section id="about" class="py-20 bg-black"> {/* Arka plan siyaha çevrildi */}
-        <div class="container mx-auto px-6">
-            <h2 class="section-title">ABOUT</h2>
-            <div class="max-w-3xl mx-auto bg-gray-900 p-10 rounded-xl shadow-2xl"> {/* İçerik kutusu bir ton açık gri */}
-                <p class="text-lg text-gray-300 leading-relaxed">
-                    Ben Burak, grafik tasarım bölümü 4. sınıf öğrencisiyim. Tasarım benim için sadece görsel bir anlatım değil, aynı zamanda bir ifade biçimi. Logo tasarımı, İllüstrasyon, sosyal medya İçerikleri ve tipografi alanlarında yoğunlaşarak, özgün ve dikkat çekici işler üretmeye odaklanıyorum.
-                </p>
-                <p class="mt-6 text-lg text-gray-300 leading-relaxed">
-                    Photoshop, Illustrator, Figma ve After Effects gibi tasarım araçlarını aktif şekilde kullanıyorum. Hem ajans ortamında profesyonel deneyim kazanmayı hem de freelance projelerle kendi yaratıcı çizgimi ortaya koymayı hedefliyorum.
-                </p>
-                <p class="mt-6 text-lg text-gray-300 leading-relaxed">
-                    Yaratıcılığım, risk almaktan çekinmeyen yapım ve cesaretim, projelerimde fark yaratmamı sağlıyor. Kendimi sürekli geliştirerek, hem sektöre katkı sunmak hem de kendi tasarım dilimi daha da ileriye taşımak istiyorum.
-                </p>
-            </div>
-        </div>
+    <!-- PORTFOLIO -->
+    <section class="mb-8 bg-gray-900 p-6 rounded-xl shadow-2xl">
+      <h2 class="text-xl font-semibold mb-4">Portfolyo Öğeleri</h2>
+      <div id="portfolioEditor" class="space-y-4"></div>
+      <button id="addItemBtn" class="btn-primary mt-4">Yeni Ekle</button>
     </section>
+  </div>
 
-    <section id="contact" class="py-20 bg-black"> {/* Arka plan siyaha çevrildi */}
-        <div class="container mx-auto px-6">
-            <h2 class="section-title">CONTACT</h2>
-            <div class="max-w-2xl mx-auto bg-gray-900 p-10 rounded-xl shadow-2xl"> {/* İçerik kutusu bir ton açık gri */}
-                <form action="#" method="POST" id="contactForm">
-                    <div class="mb-6">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" name="name" id="name" placeholder="Adınız Soyadınız" class="form-input">
-                    </div>
-                    <div class="mb-6">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" id="email" placeholder="ornek@mail.com" class="form-input">
-                    </div>
-                    <div class="mb-8">
-                        <label for="message" class="form-label">Message</label>
-                        <textarea name="message" id="message" rows="5" placeholder="Mesajınızı buraya girin..." class="form-input"></textarea>
-                    </div>
-                    <div>
-                        <button type="submit" class="w-full btn-primary">
-                            Send
-                        </button>
-                    </div>
-                </form>
-                <div id="formMessage" class="mt-4 text-center"></div>
-            </div>
-        </div>
-    </section>
+  <template id="portfolioItemTemplate">
+    <div class="p-4 bg-gray-800 rounded-lg grid md:grid-cols-3 gap-4 portfolio-item">
+      <input placeholder="Başlık" class="form-input col-span-2 titleInput" />
+      <div class="flex space-x-2">
+        <button class="btn-primary delBtn">Sil</button>
+      </div>
+      <input placeholder="Resim URL" class="form-input col-span-2 imgInput mt-2 md:mt-0" />
+      <input placeholder="Link (optional)" class="form-input linkInput" />
+    </div>
+  </template>
 
-    <footer class="bg-black text-center py-8"> {/* Arka plan siyaha çevrildi */}
-        <p class="text-gray-400">&copy; <span id="currentYear"></span> Burak Sürmeli. All rights reserved.</p>
-    </footer>
+  <script>
+    const LS_KEY = 'portfolioData_v2';
+    const ADMIN_PASS = 'admin123'; // şifreyi buradan değiştirin
+    const loginBtn = document.getElementById('loginBtn');
+    const pwdInput = document.getElementById('pwd');
+    const loginCard = document.getElementById('loginCard');
+    const adminPanel = document.getElementById('adminPanel');
 
-    <script>
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetElement = document.querySelector(this.getAttribute('href'));
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+    loginBtn.addEventListener('click', () => {
+      if (pwdInput.value === ADMIN_PASS) {
+        loginCard.classList.add('hidden');
+        adminPanel.classList.remove('hidden');
+        initAdmin();
+      } else {
+        pwdInput.classList.add('border-red-500');
+      }
+    });
 
-        // Set current year in footer
-        const currentYearElement = document.getElementById('currentYear');
-        if (currentYearElement) {
-            currentYearElement.textContent = new Date().getFullYear();
-        }
-        
+    function loadData(){ try{ return JSON.parse(localStorage.getItem(LS_KEY))||{} }catch(e){return {}} }
+    function saveData(d){ localStorage.setItem(LS_KEY, JSON.stringify(d)); }
 
-        // İletişim formu için JavaScript
-        const contactForm = document.getElementById('contactForm');
-        const formMessage = document.getElementById('formMessage');
+    function initAdmin(){
+      const data = Object.assign({}, loadData());
+      // fill general
+      document.getElementById('logoInput').value = data.logo || '';
+      document.getElementById('heroBgInput').value = data.heroBg || '';
+      document.getElementById('heroNameInput').value = data.heroName || '';
+      document.getElementById('heroTagInput').value = data.heroTag || '';
+      document.getElementById('aboutInput').value = data.about || '';
 
-        if (contactForm && formMessage) { // formMessage null kontrolü eklendi
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const nameInput = document.getElementById('name');
-                const emailInput = document.getElementById('email');
-                const messageInput = document.getElementById('message');
+      // portfolio items
+      const editor = document.getElementById('portfolioEditor');
+      editor.innerHTML = '';
+      (data.portfolio||[]).forEach(addItemRow);
 
-                // Inputların varlığını kontrol et
-                if (!nameInput || !emailInput || !messageInput) {
-                    formMessage.textContent = 'Form alanları bulunamadı.';
-                    formMessage.className = 'mt-4 text-center text-red-400';
-                    return;
-                }
+      document.getElementById('addItemBtn').onclick = () => addItemRow();
+      document.getElementById('saveBtn').onclick = () => {
+        const newData = collectForm();
+        saveData(newData);
+        alert('Kaydedildi!');
+      };
+      document.getElementById('previewBtn').onclick = () => {
+        const previewData = collectForm();
+        localStorage.setItem(LS_KEY+'_preview', JSON.stringify(previewData));
+        window.open('./index.html?preview','_blank');
+      };
+    }
 
-                const name = nameInput.value.trim();
-                const email = emailInput.value.trim();
-                const message = messageInput.value.trim();
-                let isValid = true;
-                let feedbackMessage = '';
+    function addItemRow(item={title:'',img:'',link:''}){
+      const tpl = document.getElementById('portfolioItemTemplate').content.cloneNode(true);
+      tpl.querySelector('.titleInput').value = item.title;
+      tpl.querySelector('.imgInput').value   = item.img;
+      tpl.querySelector('.linkInput').value  = item.link;
+      tpl.querySelector('.delBtn').onclick = (e)=> e.currentTarget.closest('.portfolio-item').remove();
+      document.getElementById('portfolioEditor').appendChild(tpl);
+    }
 
-                if (!name || !email || !message) {
-                    feedbackMessage = 'Lütfen tüm alanları doldurun.';
-                    isValid = false;
-                } else if (!validateEmail(email)) {
-                    feedbackMessage = 'Lütfen geçerli bir e-posta adresi girin.';
-                    isValid = false;
-                }
-
-                if (isValid) {
-                    formMessage.textContent = 'Mesajınız başarıyla gönderildi! (Bu bir demo mesajıdır.)';
-                    formMessage.className = 'mt-4 text-center text-green-400';
-                    contactForm.reset(); 
-                } else {
-                    formMessage.textContent = feedbackMessage;
-                    formMessage.className = 'mt-4 text-center text-red-400';
-                }
-
-                setTimeout(() => {
-                    formMessage.textContent = '';
-                    formMessage.className = 'mt-4 text-center';
-                }, 5000);
-            });
-        }
-
-        function validateEmail(email) {
-            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(String(email).toLowerCase());
-        }
-    </script>
-
+    function collectForm(){
+      const portfolio = Array.from(document.querySelectorAll('.portfolio-item')).map(row=>({
+        title: row.querySelector('.titleInput').value,
+        img:   row.querySelector('.imgInput').value,
+        link:  row.querySelector('.linkInput').value
+      })).filter(i=>i.title||i.img);
+      return {
+        logo:       document.getElementById('logoInput').value||'LOGO',
+        heroBg:     document.getElementById('heroBgInput').value,
+        heroName:   document.getElementById('heroNameInput').value,
+        heroTag:    document.getElementById('heroTagInput').value,
+        about:      document.getElementById('aboutInput').value,
+        portfolio:  portfolio
+      };
+    }
+  </script>
 </body>
 </html>
